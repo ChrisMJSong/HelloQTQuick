@@ -37,6 +37,25 @@ Rectangle {
         Cell { cellColor: "black"; onClicked: label.color = cellColor }
     }
 
+    Button {
+        id: popupButton
+        x: 130
+        y: 0
+        width: 106
+        height: 53
+        text: qsTr("Popup Text")
+
+        Image {
+            id: image
+            x: 5
+            y: 5
+            width: 43
+            height: 43
+            source: "img.png"
+        }
+
+    }
+
     Label {
         id: label
         x: 193
