@@ -54,6 +54,9 @@ Rectangle {
             source: "img.png"
         }
 
+//        onClicked: {
+//            label.state == "down"
+//        }
     }
 
     Label {
@@ -65,6 +68,19 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         font.bold: true
         font.pointSize: 60
+
+        states: State {
+            name: "down"; when: popupButton.pressed === true  //when: mouseArea.pressed === true
+            PropertyChanges { target: label; anchors.verticalCenterOffset: -100; y: 160; rotation: 40; color: "red" }
+        }
+
+        transitions: Transition {
+            from: ""; to: "down"; reversible: true
+            ParallelAnimation {
+                NumberAnimation { properties: "anchors.verticalCenterOffset,rotation"; duration: 500; easing.type: Easing.InOutQuad }
+                ColorAnimation { duration: 500 }
+            }
+        }
     }
 
     Button {
