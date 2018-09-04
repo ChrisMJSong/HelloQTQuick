@@ -1,5 +1,4 @@
 import QtQuick 2.0
-import QtQuick.Window 2.3
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls 2.2
 
@@ -18,6 +17,24 @@ Rectangle {
             // do something
         }
 //        Component.onCompleted: visible = true
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        onClicked: container.clicked(container.cellColor)
+    }
+
+    Grid {
+        id: colorPicker
+        x: 4; anchors.bottom: page.bottom; anchors.bottomMargin: 4
+        rows: 2; columns: 3; spacing: 3
+
+        Cell { cellColor: "red"; onClicked: label.color = cellColor }
+        Cell { cellColor: "green"; onClicked: label.color = cellColor }
+        Cell { cellColor: "blue"; onClicked: label.color = cellColor }
+        Cell { cellColor: "yellow"; onClicked: label.color = cellColor }
+        Cell { cellColor: "steelblue"; onClicked: label.color = cellColor }
+        Cell { cellColor: "black"; onClicked: label.color = cellColor }
     }
 
     Label {
