@@ -31,6 +31,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     UIKit/UIView.qml \
+    UIKit/UIControl.qml
 
 HEADERS += \
     mainviewcontroller.h

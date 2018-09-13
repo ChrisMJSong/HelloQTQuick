@@ -4,5 +4,6 @@
         <file>img.png</file>
         <file>Cell.qml</file>
         <file>UIKit/UIView.qml</file>
+        <file>UIKit/UIControl.qml</file>
     </qresource>
 </RCC>
