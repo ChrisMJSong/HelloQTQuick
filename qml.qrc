@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>img.png</file>
         <file>Cell.qml</file>
+        <file>UIKit/UIView.qml</file>
     </qresource>
 </RCC>
