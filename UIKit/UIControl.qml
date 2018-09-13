@@ -8,6 +8,10 @@ UIView {
     signal touchUp()
     signal touchDown()
 
+    function isPressed() {
+        return privateProperties.isPressed
+    }
+
     Item {
         id: privateProperties
         property bool isPressed: false
