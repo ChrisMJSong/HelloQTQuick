@@ -1,7 +1,7 @@
 import QtQuick 2.0
 
 UIView {
-    id: superView
+    id: self
 
     signal clicked()
     signal release()
@@ -18,14 +18,13 @@ UIView {
         anchors.fill: parent
         onPressedChanged: {
             privateProperties.isPressed = !privateProperties.isPressed
-
             if (privateProperties.isPressed) {
-                superView.touchDown()
+                self.touchDown()
             } else {
-                superView.touchUp()
+                self.touchUp()
             }
         }
 
-        onClicked: superView.clicked()
+        onClicked: self.clicked()
     }
 }
