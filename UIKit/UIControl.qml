@@ -12,7 +12,7 @@ UIView {
         return privateProperties.isPressed
     }
 
-    Item {
+    QtObject {
         id: privateProperties
         property bool isPressed: false
     }

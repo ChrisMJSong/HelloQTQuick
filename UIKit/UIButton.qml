@@ -9,6 +9,7 @@ UIControl {
     property string backgroundImageSource: ""
     property bool selected: false
 
+    // MARK: javascript functions
     function setImageAtState(state) {
     }
 
@@ -32,7 +33,7 @@ UIControl {
     function indexForState(state) {
         var index = 0;
         switch (state) {
-        case uiControlState.normal:
+        case uiControlState.highlighted:
             index = 1
             break;
         case uiControlState.selected:
@@ -50,8 +51,7 @@ UIControl {
         return index
     }
 
-    // MARK: javascript functions
-    function setTitleForSate(title, state) {
+    function setTitleForState(title, state) {
         var index = indexForState(state)
         privateProperties.titles[index] = title;
 
@@ -71,9 +71,13 @@ UIControl {
         return titleText;
     }
 
-    function setBackgroundImageForSate(imageSource, state) {
+    function setBackgroundImageForState(imageSource, state) {
         var index = indexForState(state)
         privateProperties.backgroundImageSources[index] = imageSource;
+
+        if(self.state === state) {
+            backgroundImage.source = imageSource
+        }
     }
 
     function backgroundImageForState(state) {
@@ -153,11 +157,18 @@ UIControl {
     // MARK: State
     states: [
         State {
-            id: state1
             name: uiControlState.normal
             PropertyChanges {
                 target: titleLabel;
                 text: titleForState(uiControlState.normal);
+            }
+            PropertyChanges {
+                target: image;
+                source: backgroundImageForState(uiControlState.normal)
+            }
+            PropertyChanges {
+                target: backgroundImage;
+                source: backgroundImageForState(uiControlState.normal)
             }
         },
         State {
@@ -166,12 +177,28 @@ UIControl {
                 target: titleLabel;
                 text: titleForState(uiControlState.highlighted);
             }
+            PropertyChanges {
+                target: image;
+                source: backgroundImageForState(uiControlState.highlighted)
+            }
+            PropertyChanges {
+                target: backgroundImage;
+                source: backgroundImageForState(uiControlState.highlighted)
+            }
         },
         State {
             name: uiControlState.selected
             PropertyChanges {
                 target: titleLabel;
                 text: titleForState(uiControlState.selected);
+            }
+            PropertyChanges {
+                target: image;
+                source: backgroundImageForState(uiControlState.selected)
+            }
+            PropertyChanges {
+                target: backgroundImage;
+                source: backgroundImageForState(uiControlState.selected)
             }
         },
         State {
@@ -180,6 +207,14 @@ UIControl {
             PropertyChanges {
                 target: titleLabel;
                 text: titleForState(uiControlState.disabled);
+            }
+            PropertyChanges {
+                target: image;
+                source: backgroundImageForState(uiControlState.disabled)
+            }
+            PropertyChanges {
+                target: backgroundImage;
+                source: backgroundImageForState(uiControlState.disabled)
             }
         }
     ]
@@ -190,13 +225,13 @@ UIControl {
     }
 
     onTouchDown: {
-        state = uiControlState.highlighted
+        self.state = uiControlState.highlighted
     }
 
     Component.onCompleted: {
         self.state = uiControlState.normal
         titleLabel.text = Qt.binding(function() {return privateProperties.titles[0] = title;})
         titleLabel.color = Qt.binding(function() {return tintColor;})
-        backgroundImage.source = Qt.binding(function() { return backgroundImageSource; })
+        backgroundImage.source = Qt.binding(function() { return privateProperties.backgroundImageSources[0] = backgroundImageSource; })
     }
 }
