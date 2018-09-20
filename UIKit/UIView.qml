@@ -3,7 +3,7 @@ import QtQuick 2.0
 Item {
     id: self
 
-    property color  backgroundColor: "white"
+    property color  backgroundColor: "#FFFFFF"
 
     width:200
     height:200
@@ -12,12 +12,6 @@ Item {
         id: background
         anchors.fill: parent
         border.width: 0
-    }
-
-    PropertyChanges {
-        id: colorChanges
-        target: backgroundColor;
-        background.color: backgroundColor;
     }
 
     Component.onCompleted: {
