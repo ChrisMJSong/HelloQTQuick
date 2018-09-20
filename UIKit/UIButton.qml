@@ -1,18 +1,16 @@
 import QtQuick 2.0
 
-UIControl {    
+UIControl {
     id: self
 
     // MARK: Property declarations
     property string title: "Button"
     property color tintColor: "#49A0F8"
-    property string backgroundImageSource: ""
+    property url imageSource: ""
+    property url backgroundImageSource: ""
     property bool selected: false
 
     // MARK: javascript functions
-    function setImageAtState(state) {
-    }
-
     function isSelected() {
         return selected
     }
@@ -71,6 +69,26 @@ UIControl {
         return titleText;
     }
 
+    function setImageForState(imageSource, state) {
+        var index = indexForState(state)
+        privateProperties.imageSources[index] = imageSource;
+
+        if(self.state === state) {
+            imageSources.source = imageSource
+        }
+    }
+
+    function imageForState(state) {
+        var index = indexForState(state)
+        var imageSource = privateProperties.imageSources[index];
+
+        if (imageSource === undefined || imageSource.length === 0) {
+            imageSource = privateProperties.imageSources[0];
+        }
+
+        return imageSource;
+    }
+
     function setBackgroundImageForState(imageSource, state) {
         var index = indexForState(state)
         privateProperties.backgroundImageSources[index] = imageSource;
@@ -94,6 +112,7 @@ UIControl {
     // MARK: Object properties
     width: 100
     height: 50
+    backgroundColor: "#00000000"
 
     // MARK: Private Properties
     QtObject {
@@ -113,31 +132,48 @@ UIControl {
     }
 
     // MARK: Child objects
-    Image {
+    BorderImage {
         id: backgroundImage
+        source: ""
         anchors.fill: parent
-        source: "qrc:/qtquickplugin/images/template_image.png"
+        border {
+            left: 10
+            top: 10
+            right: 10
+            bottom: 20
+        }
     }
 
     Image {
         id: image
-        width: 0    // 기본으로 이미지를 표시하지 않음.
-        anchors{
-            left: parent.left
-            leftMargin: 0
-            top: parent.top
-            topMargin: 0
-            bottom: parent.bottom
-            bottomMargin: 0
-        }
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+        fillMode: Image.PreserveAspectFit
+        visible: true
         source: ""
+
+        onStatusChanged: {
+            if(status == Image.Ready) {
+                var targetWidth = sourceSize.width;
+                var targetHeight = sourceSize.height;
+
+                if (targetWidth > parent.width) {
+                    targetWidth = parent.width
+                }
+                if (targetHeight > parent.height) {
+                    targetHeight = parent.height
+                }
+                width = targetWidth / Screen.devicePixelRatio
+                height = targetHeight / Screen.devicePixelRatio
+            }
+        }
     }
 
     Text {
         id: titleLabel
         text: qsTr("Button")
         anchors{
-            left: image.right
+            left: parent.left
             leftMargin: 8
             top: parent.top
             topMargin: 0
@@ -158,13 +194,14 @@ UIControl {
     states: [
         State {
             name: uiControlState.normal
+            when: !self.selected && self.enabled
             PropertyChanges {
                 target: titleLabel;
                 text: titleForState(uiControlState.normal);
             }
             PropertyChanges {
                 target: image;
-                source: backgroundImageForState(uiControlState.normal)
+                source: imageForState(uiControlState.normal)
             }
             PropertyChanges {
                 target: backgroundImage;
@@ -179,7 +216,7 @@ UIControl {
             }
             PropertyChanges {
                 target: image;
-                source: backgroundImageForState(uiControlState.highlighted)
+                source: imageForState(uiControlState.highlighted)
             }
             PropertyChanges {
                 target: backgroundImage;
@@ -188,13 +225,14 @@ UIControl {
         },
         State {
             name: uiControlState.selected
+            when: self.selected
             PropertyChanges {
                 target: titleLabel;
                 text: titleForState(uiControlState.selected);
             }
             PropertyChanges {
                 target: image;
-                source: backgroundImageForState(uiControlState.selected)
+                source: imageForState(uiControlState.selected)
             }
             PropertyChanges {
                 target: backgroundImage;
@@ -210,7 +248,7 @@ UIControl {
             }
             PropertyChanges {
                 target: image;
-                source: backgroundImageForState(uiControlState.disabled)
+                source: imageForState(uiControlState.disabled)
             }
             PropertyChanges {
                 target: backgroundImage;
@@ -232,6 +270,7 @@ UIControl {
         self.state = uiControlState.normal
         titleLabel.text = Qt.binding(function() {return privateProperties.titles[0] = title;})
         titleLabel.color = Qt.binding(function() {return tintColor;})
+        image.source = Qt.binding(function() { return privateProperties.imageSources[0] = imageSource; })
         backgroundImage.source = Qt.binding(function() { return privateProperties.backgroundImageSources[0] = backgroundImageSource; })
     }
 }
