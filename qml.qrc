@@ -6,5 +6,6 @@
         <file>UIKit/UIButton.qml</file>
         <file>UIKit/UIView.qml</file>
         <file>UIKit/UIControl.qml</file>
+        <file>UIKit/UISlider.qml</file>
     </qresource>
 </RCC>
