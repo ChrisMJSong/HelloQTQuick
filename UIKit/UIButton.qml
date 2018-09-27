@@ -30,6 +30,26 @@ UIControl {
         }
     }
 
+    function stateNameAtIndex(index) {
+        var stateName = uiControlState.normal
+        switch (index) {
+        case 1:
+            stateName = uiControlState.highlighted
+            break;
+        case 2:
+            stateName = uiControlState.selected
+            break;
+        case 3:
+            stateName = uiControlState.disabled
+            break;
+        case 0:
+        default:
+            break;
+        }
+
+        return stateName
+    }
+
     function indexForState(state) {
         var index = 0;
         switch (state) {
