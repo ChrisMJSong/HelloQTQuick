@@ -1,13 +1,14 @@
-import QtQuick 2.0
+import QtQuick 2.9
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls 2.2
+import "UIKit"
+
+//import UIKit 1.0
 
 Rectangle {
     id: win
     width: 640
     height: 480
-
-
 
     MessageDialog {
         id: messageDialog
@@ -16,18 +17,16 @@ Rectangle {
         onAccepted: {
             // do something
         }
-//        Component.onCompleted: visible = true
     }
 
-    MouseArea {
-        anchors.fill: parent
-        onClicked: container.clicked(container.cellColor)
-    }
 
     Grid {
         id: colorPicker
-        x: 4; anchors.bottom: page.bottom; anchors.bottomMargin: 4
         rows: 2; columns: 3; spacing: 3
+
+        MouseArea {
+            onClicked: container.clicked(container.cellColor)
+        }
 
         Cell { cellColor: "red"; onClicked: label.color = cellColor }
         Cell { cellColor: "green"; onClicked: label.color = cellColor }
@@ -47,16 +46,10 @@ Rectangle {
 
         Image {
             id: image
-            x: 5
-            y: 5
-            width: 43
-            height: 43
-            source: "img.png"
+            fillMode: Image.PreserveAspectCrop
+            anchors.fill: parent
+            source: ""
         }
-
-//        onClicked: {
-//            label.state == "down"
-//        }
     }
 
     Label {
@@ -102,7 +95,20 @@ Rectangle {
 
         onClicked: {
             viewController.testAlert("Button Clicked!");
+            uIButton.state
         }
+    }
+
+    Text {
+        id: hiddenText
+        x: uIView.x
+        y: uIView.y
+        width: uIView.width
+        height: 100
+        text: qsTr("HIDDEN\nTEXT")
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignHCenter
+        font.pixelSize: 26
     }
 
     Connections {
@@ -113,4 +119,85 @@ Rectangle {
             messageDialog.open();
         }
     }
+
+    UIView {
+        id: uIView
+        width: 100
+        height: 100
+        anchors.right: uIButton.left
+        anchors.rightMargin: 34
+        anchors.verticalCenterOffset: -100
+        anchors.verticalCenter: parent.verticalCenter
+        backgroundColor: "#ff0000"
+        opacity: 0.95
+    }
+
+    UIControl {
+        id: uIControl
+        width: 100
+        height: 100
+        opacity: 0.7
+        anchors.verticalCenterOffset: -100
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.left: uIButton.right
+        anchors.leftMargin: 44
+        visible: true
+        backgroundColor: "#0000ff"
+        // 클릭 이벤트 (기타 이벤트는 바인딩 하지 않음)
+        onClicked: { console.log("버튼 상태변경 "); uIButton.enabled = !uIButton.enabled}
+    }
+
+    UIButton {
+        id: uIButton
+        height: 100
+        anchors.verticalCenterOffset: -100
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+        title: "NORMAL"
+        selected: false
+        backgroundImageSource: "bt_gray_n.png"
+        backgroundColor: "#00000000"
+        // 클릭 이벤트
+        onClicked: {
+            console.log("Button clicked")
+            selected = !selected
+        }
+        // 눌림 이벤트
+        onTouchDown: {
+            console.log("Button pressed")
+        }
+        // 릴리즈 이벤트
+        onTouchUp: {
+            console.log("Button released")
+        }
+
+        Component.onCompleted: {
+            // 노멀 상태 이외의 기타 버튼 설정함.
+            // 노멀은 기본 설정시 자동으로 설정됨. (오버라이딩 해도 상관없음)
+            // 상태는 0: normal, 1: highlighted, 2: selected, 3: disabled
+            var stateHighlighted = stateNameAtIndex(1)  // 상태 이름을 인덱스 형태로 가져올 수도 있음.
+            setTitleForState("HIGHLIGHT", stateHighlighted);
+            setTitleForState("SELECTED", "selected");
+            setBackgroundImageForState("../bt_gray_p.png", stateHighlighted)
+            setBackgroundImageForState("../bt_gray_p.png", "selected")
+        }
+    }
+
+    UISlider {
+        id: uISlider
+        width: label.width
+        value: 0.95
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: label.bottom
+        anchors.topMargin: 6
+        minTrackColor: "#38558c"
+        maxTrackColor: "#3f3f41"
+        thumbImageSource: "../bt_pick.png"
+
+        onValueChanged: {
+            uIView.opacity = value
+            value = value > 0.1 ? value : 0.1   // 값에 제한을 두고자 할때 이와 같이 사용.
+        }
+    }
+
 }
