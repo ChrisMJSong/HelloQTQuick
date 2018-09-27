@@ -1,4 +1,6 @@
 import QtQuick 2.0
+import QtQuick.Window 2.3
+
 
 UIControl {
     id: self
@@ -21,9 +23,9 @@ UIControl {
             break;
         case "highlighted":
             break;
-        case "normal":
+        case "selected":
             break;
-        case "normal":
+        case "disabled":
             break;
         }
     }
@@ -157,14 +159,15 @@ UIControl {
                 var targetWidth = sourceSize.width;
                 var targetHeight = sourceSize.height;
 
+                width = targetWidth / Screen.devicePixelRatio
+                height = targetHeight / Screen.devicePixelRatio
+
                 if (targetWidth > parent.width) {
                     targetWidth = parent.width
                 }
                 if (targetHeight > parent.height) {
                     targetHeight = parent.height
                 }
-                width = targetWidth / Screen.devicePixelRatio
-                height = targetHeight / Screen.devicePixelRatio
             }
         }
     }
