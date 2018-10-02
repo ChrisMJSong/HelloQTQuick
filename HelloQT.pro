@@ -30,10 +30,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    UIKit/UIButton.qml \
-    UIKit/UIView.qml \
-    UIKit/UIControl.qml \
-    UIKit/UISlider.qml
+    HCUIKit/UIButton.qml \
+    HCUIKit/UIView.qml \
+    HCUIKit/UIControl.qml \
+    HCUIKit/UISlider.qml
 
 HEADERS += \
     mainviewcontroller.h

@@ -3,10 +3,10 @@
         <file>main.qml</file>
         <file>img.png</file>
         <file>Cell.qml</file>
-        <file>UIKit/UIButton.qml</file>
-        <file>UIKit/UIView.qml</file>
-        <file>UIKit/UIControl.qml</file>
-        <file>UIKit/UISlider.qml</file>
+        <file>HCUIKit/UIButton.qml</file>
+        <file>HCUIKit/UIView.qml</file>
+        <file>HCUIKit/UIControl.qml</file>
+        <file>HCUIKit/UISlider.qml</file>
         <file>bt_gray_n.png</file>
         <file>bt_gray_p.png</file>
         <file>bt_pick.png</file>

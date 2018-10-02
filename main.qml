@@ -1,7 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls 2.2
-import "UIKit"
+import "HCUIKit"
 
 //import UIKit 1.0
 
